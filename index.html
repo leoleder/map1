@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolivia: Censo 2024</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <header>
+            <h1>Bolivia <span class="highlight">2024</span></h1>
+            <p class="subtitle">Visualización Interactiva de Población</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="card map-card">
+                <div id="regions_div" class="map-chart"></div>
+                <div class="map-overlay-hint">
+                    <span class="icon">👆</span> Selecciona un departamento
+                </div>
+            </div>
+
+            <div class="card info-card">
+                <div class="info-content">
+                    <div class="info-header">
+                        <span class="badge">Resultados Oficiales</span>
+                        <h2 id="dept-name">Bolivia</h2>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <span class="stat-label">Población Total</span>
+                        <h3 id="dept-pop" class="counter">11.312.620</h3>
+                        <span class="stat-unit">habitantes</span>
+                    </div>
+
+                    <div class="info-footer">
+                        <p>Fuente: INE - Agosto 2024</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="author-credits">
+            <p>Elaborado por:</p>
+            <div class="author-name">JOHN LEONARDO CABRERA ESPÍNDOLA</div>
+            <p class="year">© 2025 - Desarrollo Web</p>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
