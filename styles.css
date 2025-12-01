@@ -1,209 +1,360 @@
-/* VARIABLES DE COLOR */
+/* style.css */
+
+/* =========================================
+   1. VARIABLES Y CONFIGURACIÓN
+   ========================================= */
 :root {
-    --bg-color: #eef2f6;
-    --card-bg: #ffffff;
-    --primary: #2563eb; /* Azul intenso */
-    --accent: #f59e0b;  /* Dorado */
-    --text-dark: #1e293b;
+    --bg-gradient: linear-gradient(-45deg, #e0e7ff, #f3e8ff, #e0f2fe, #f1f5f9);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --primary: #2563eb;       /* Azul vibrante */
+    --primary-dark: #1e3a8a;  /* Azul noche */
+    --accent: #f59e0b;        /* Dorado */
+    --text-dark: #0f172a;
     --text-light: #64748b;
-    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    
+    /* Sombras modernas (Neumorphism soft) */
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 20px 30px -5px rgba(37, 99, 235, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    
+    /* Transiciones estándar */
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ESTILOS GENERALES */
+/* =========================================
+   2. ESTILOS BASE Y ANIMACIONES DE FONDO
+   ========================================= */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-color);
+    background: var(--bg-gradient);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite; /* Fondo en movimiento */
     color: var(--text-dark);
     margin: 0;
-    padding: 0;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Animación de entrada suave (Slide Up) */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .main-container {
     width: 90%;
     max-width: 1200px;
     margin: 40px auto;
+    /* Aplicar animación de entrada al contenedor entero */
+    animation: fadeInUp 0.8s ease-out forwards; 
 }
 
-/* HEADER */
+/* =========================================
+   3. HEADER CON ESTILO
+   ========================================= */
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 h1 {
     font-weight: 800;
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin: 0;
-    letter-spacing: -1px;
-    color: var(--text-dark);
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, var(--text-dark) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Texto con degradado */
+    text-shadow: 0px 2px 10px rgba(0,0,0,0.05);
 }
 
 .highlight {
     color: var(--primary);
+    position: relative;
+    display: inline-block;
+}
+
+/* Subrayado animado en el 2024 */
+.highlight::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    bottom: 5px;
+    left: 0;
+    background: rgba(37, 99, 235, 0.2);
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease 0.5s; /* Retraso para que aparezca después */
+}
+
+/* Activar la animación al cargar (hack simple) */
+body:hover .highlight::after {
+    transform: scaleX(1);
 }
 
 .subtitle {
     color: var(--text-light);
-    font-size: 1.1rem;
-    margin-top: 5px;
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-top: 10px;
 }
 
-/* LAYOUT GRID */
+/* =========================================
+   4. GRID Y TARJETAS INTERACTIVAS
+   ========================================= */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* El mapa ocupa el doble que la info */
+    grid-template-columns: 2fr 1fr; 
     gap: 30px;
     margin-bottom: 50px;
 }
 
-/* TARJETAS (CARDS) */
 .card {
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
-}
-
-/* MAPA */
-.map-card {
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    border: 1px solid rgba(255,255,255,0.6);
+    backdrop-filter: blur(10px); /* Efecto cristal sutil */
     position: relative;
+    overflow: hidden;
+}
+
+/* Hover potente: La tarjeta flota y brilla */
+.card:hover {
+    transform: translateY(-10px) scale(1.01);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(37, 99, 235, 0.3);
+}
+
+/* Brillo decorativo al hacer hover */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+    transform: skewX(-25deg);
+    transition: 0.7s;
+}
+
+.card:hover::before {
+    left: 200%; /* El brillo pasa de lado a lado */
+}
+
+/* =========================================
+   5. MAPA E INDICADORES
+   ========================================= */
+.map-card {
     min-height: 550px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
 }
 
 .map-chart {
     width: 100%;
     height: 100%;
     border-radius: 15px;
+    /* Filtro sutil para integrar el mapa de Google */
+    filter: saturate(1.1) contrast(1.05); 
 }
 
 .map-overlay-hint {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 8px 15px;
-    border-radius: 30px;
-    font-size: 0.85rem;
-    color: var(--text-light);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    bottom: 25px;
+    left: 25px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
     pointer-events: none;
+    animation: float 3s ease-in-out infinite; /* Flota suavemente */
 }
 
-/* INFO PANEL */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.icon {
+    font-size: 1.2rem;
+}
+
+/* =========================================
+   6. PANEL DE INFORMACIÓN (DASHBOARD)
+   ========================================= */
 .info-card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    border-left: 8px solid var(--primary);
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    justify-content: space-between;
+    border-left: 6px solid var(--primary);
+}
+
+.info-header {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .badge {
     background-color: #dbeafe;
-    color: var(--primary);
-    padding: 5px 12px;
+    color: var(--primary-dark);
+    padding: 6px 14px;
     border-radius: 50px;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 800;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-bottom: 10px;
 }
 
 #dept-name {
-    font-size: 2.2rem;
-    margin: 15px 0 30px 0;
+    font-size: 2.5rem;
+    margin: 0;
     color: var(--text-dark);
     line-height: 1.1;
+    font-weight: 700;
 }
 
 .stat-box {
-    margin-bottom: 30px;
+    text-align: center;
+    padding: 30px 0;
+    position: relative;
 }
 
 .stat-label {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-light);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-weight: 600;
     display: block;
     margin-bottom: 5px;
 }
 
 #dept-pop {
-    font-size: 3rem;
+    font-size: 3.8rem; /* Número gigante */
     margin: 0;
-    color: var(--primary);
+    /* Gradiente en el número */
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-weight: 800;
-    /* Animación suave cuando cambia el número */
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .stat-unit {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--text-light);
+    font-weight: 500;
 }
 
+/* Footer de la tarjeta */
 .info-footer {
+    background: #f8fafc;
+    margin: -25px; /* Hack para cubrir padding padre */
+    margin-top: 20px;
+    padding: 15px 25px;
     border-top: 1px solid #e2e8f0;
-    padding-top: 15px;
     font-size: 0.8rem;
-    color: #94a3b8;
-    font-style: italic;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-/* FOOTER DEL AUTOR */
+.info-footer::before {
+    content: '●';
+    color: #22c55e; /* Punto verde de "online/live" */
+    margin-right: 8px;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* =========================================
+   7. CRÉDITOS DE AUTOR
+   ========================================= */
 .author-credits {
     text-align: center;
-    margin-top: 20px;
-    padding: 20px;
-    border-top: 1px solid #cbd5e1;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    opacity: 0.8;
+    transition: opacity 0.3s;
 }
 
-.author-credits p {
-    margin: 5px 0;
-    font-size: 0.9rem;
-    color: var(--text-light);
+.author-credits:hover {
+    opacity: 1;
 }
 
 .author-name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--text-dark);
-    letter-spacing: 1px;
-    background: linear-gradient(90deg, #2563eb, #1e40af);
+    background: linear-gradient(90deg, #2563eb, #9333ea); /* Azul a Morado */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    display: inline-block;
     padding: 5px 10px;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.3s;
 }
 
-/* RESPONSIVE DESIGN (Para celulares) */
+.author-name:hover {
+    transform: scale(1.1) rotate(-2deg);
+}
+
+/* =========================================
+   8. RESPONSIVE (MÓVILES)
+   ========================================= */
 @media (max-width: 850px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
     
+    h1 { font-size: 2.5rem; }
+
     .map-card {
         min-height: 400px;
     }
 
-    #dept-name {
-        font-size: 1.8rem;
-    }
-
     #dept-pop {
-        font-size: 2.5rem;
+        font-size: 3rem;
+    }
+    
+    .main-container {
+        width: 95%;
+        margin: 20px auto;
     }
 }
